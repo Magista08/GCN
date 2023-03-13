@@ -25,8 +25,10 @@ class Parameters:
 
 if __name__ == '__main__':
     # Basic Data
+    print("\033[1m=== Data Download ===\033[1m")
     input_data = data_load(INPUT_LOC)
     parameters = Parameters
+    print()
 
     # init model
     model = GCN(

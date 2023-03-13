@@ -49,8 +49,8 @@ def train(_model, _data_set, _parameter, log=True):
         scheduler.step()
 
         val_loss, val_accuracy = evaluate(model, features, _data_set.val_labels, adjacency_matrix)
-        train_iterator.set_description(f"Training loss = {loss.item():.4f}, "
-                                       f"val loss = {val_loss:.4f}, val accuracy = {val_accuracy:.2f}")
+        train_iterator.set_description(f"Training loss = {loss.item():.2f}, "
+                                       f"val loss = {val_loss:.2f}, val accuracy = {val_accuracy:.2f}")
 
         save_best_model = val_loss < least_loss
         if save_best_model:
@@ -61,7 +61,7 @@ def train(_model, _data_set, _parameter, log=True):
             output_dir = os.path.join(_parameter.output_dir, f"Epoch_{epoch + 1}")
             save(model, output_dir)
     if log:
-        print(f"Best model val CE loss = {least_loss:.4f}, best model val accuracy = {best_accuracy:.2f}")
+        print(f"Best model val CE loss = {least_loss:.2f}, best model val accuracy = {best_accuracy:.2f}")
         # reloads the best model state dict, bit hacky :P
     model.load_state_dict(best_model_state_dict)
 

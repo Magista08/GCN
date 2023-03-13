@@ -24,17 +24,21 @@ class DataSet:
 
 def data_load(data_path):
     # Download Data
+    print("Download Data...")
     cora_dataset = torch_geometric.datasets.Planetoid(root=data_path, name="Cora")
     data = cora_dataset[0]
+    print("Done\n")
     output = DataSet
 
     # Features
+    print("Prepare features...")
     features = data.x.clone()
     features_sum = features.sum(1).unsqueeze(1)
     features_sum[features_sum == 0] = 1.0
     features = torch.div(features, features_sum)
 
     # Read train, test, valid labels
+    print("Prepare Labels...")
     ignore_index = nn.CrossEntropyLoss().ignore_index  # = -100, used to ignore not allowed labels in CE loss
     num_classes = len(set(data.y.numpy()))
     labels = data.y.clone()
@@ -43,6 +47,7 @@ def data_load(data_path):
     test_labels = set_labels(data.y.clone(), data.test_mask, ignore_index)
 
     # Read & normalize adjacency matrix
+    print("Calculate the A")
     adjacency_matrix, adj_csr = ajacency_matrix(data.edge_index)
 
     # Output
@@ -55,6 +60,7 @@ def data_load(data_path):
     output.adjacency_matrix = adjacency_matrix
     output.laplacian_matrix = get_laplacian_matrix(adj_csr)
 
+    print("Done!\n")
     return output
 
 
